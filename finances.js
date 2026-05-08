@@ -221,6 +221,7 @@ function sortTable(column) {
     const sortedRows = rows.sort((a, b) => {
         const aValue = isNumeric ? parseFloat(a.dataset[column]) : a.dataset[column];
         const bValue = isNumeric ? parseFloat(b.dataset[column]) : b.dataset[column];
+
         if (typeof aValue === "string" && typeof bValue === "string") {
             return aValue.localeCompare(bValue, undefined, { sensitivity: "base" });
         } else {
@@ -241,8 +242,10 @@ document.getElementById("searchInput").addEventListener("keyup", function(event)
 function performSearch() {
     const searchInput = document.getElementById("searchInput").value.toLowerCase();
     const rows = document.querySelectorAll(".transaction-row");
+
     rows.forEach(row => {
-        const visible = row.innerText.toLowerCase().includes(searchInput);
+        const rowText = (row.textContent || "").toLowerCase();
+        const visible = rowText.includes(searchInput);
         row.style.display = visible ? "table-row" : "none";
     });
 }
@@ -275,3 +278,27 @@ function generateCSV(data) {
 }
 
 window.addEventListener('load', initFinances);
+
+if (typeof window !== 'undefined') {
+    window.__financeTest__ = {
+        escapeHTML,
+        openSidebar,
+        closeSidebar,
+        openForm,
+        closeForm,
+        getCategoryKey,
+        getNextTransactionId,
+        initFinances,
+        addOrUpdate,
+        newTransaction,
+        editRow,
+        deleteTransaction,
+        updateTransaction,
+        saveAndRender,
+        displayExpenses,
+        sortTable,
+        performSearch,
+        exportToCSV,
+        generateCSV
+    };
+}
