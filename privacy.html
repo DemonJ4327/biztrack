@@ -7,6 +7,11 @@
     <meta property="og:description" content="A project born out of real small business challenges, now simplifying product, order, and finance management."/>
     <meta property="og:image:secure_url" content="https://i.imgur.com/0O47fVi.jpg"/>
     <meta property="og:url" content="https://sumusa.github.io/biztrack/"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="./styles.css"/>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'"/>
@@ -16,23 +21,67 @@
     
     <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
     <title>Privacy Policy - BizTrack</title>
+    <script src="./main.js" defer></script>
 </head>
 <body>
-    <nav class="sidebar">
+    <div id="sidebar" class="sidebar">
         <div class="logo">
-            <h2>BizTrack</h2>
+            <a href="./index.html">
+                <i class="fas fa-b"></i>
+                <span>BizTrack</span>
+            </a>
+            <i class="fa-solid fa-xmark" title="Close" onclick="closeSidebar()"></i>
         </div>
-        <ul class="nav-links">
-            <li><a href="./index.html"><i class="fas fa-home"></i> Dashboard</a></li>
-            <li><a href="./products.html"><i class="fas fa-box"></i> Products</a></li>
-            <li><a href="./orders.html"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+        <ul class="menu">
+            <li>
+                <a href="./index.html">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="./products.html">
+                    <i class="fas fa-dolly"></i>
+                    <span>Products</span>
+                </a>
+            </li>
+            <li>
+                <a href="./orders.html">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Orders</span>
+                </a>
+            </li>
+            <li>
+                <a href="./finances.html">
+                    <i class="fas fa-sack-dollar"></i>
+                    <span>Expenses</span>
+                </a>
+            </li>
+            <li>
+                <a href="./help.html">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Help</span>
+                </a>
+            </li>
+            <li class="logout">
+                <a href="./about.html">
+                    <i class="fa-solid fa-users-line"></i>
+                    <span>Meet the Developer</span>
+                </a>
+            </li>
         </ul>
-    </nav>
+    </div>
 
     <div class="main-content">
-        <header>
-            <h1>Privacy Policy</h1>
-        </header>
+        <div class="header-wrapper">
+            <div class="menu-icon" onclick="openSidebar()">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+            <div class="header-title">
+                <h2 style="color: var(--black-color);">Privacy Policy</h2>
+            </div>
+            <div class="user-info"></div>
+        </div>
 
         <div class="card" style="padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-top: 20px;">
             <p><strong>Last updated: April 23, 2026</strong></p>
@@ -51,6 +100,15 @@
         </div>
     </div>
 
+    <div id="cookie-banner" style="display: none; position: fixed; bottom: 0; width: 100%; background: #333; color: white; padding: 15px; text-align: center; z-index: 1000; box-shadow: 0 -2px 10px rgba(0,0,0,0.2);">
+        <p style="margin: 0 0 10px 0;">We use local storage and cookies to ensure you get the best experience on our app. By continuing to use this site, you consent to our policies. 
+            <a href="./privacy.html" style="color: #4CAF50; text-decoration: underline;">Read our Privacy Policy</a>.
+        </p>
+        <button id="accept-cookies" style="background: #4CAF50; color: white; border: none; padding: 8px 20px; cursor: pointer; border-radius: 4px; margin-right: 10px;">Accept</button>
+        <button id="decline-cookies" style="background: transparent; color: white; border: 1px solid white; padding: 8px 20px; cursor: pointer; border-radius: 4px;">Decline</button>
+    </div>
+
+    <script src="./script.js"></script>
     <script src="./main.js" defer></script>
 </body>
 </html>
