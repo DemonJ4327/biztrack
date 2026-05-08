@@ -1,0 +1,27 @@
+{
+  "name": "biztrack",
+  "version": "1.0.0",
+  "description": "BizTrack is a web app born from my experience running a small business. It’s a tool designed to simplify managing products, orders, and expenses seamlessly. As a small business owner, I created BizTrack to simplify the complexities of managing products, orders, and expenses. The inspiration for this project came from the challenges I faced in my own business. I wanted to develop a solution that could benefit “myself” and others in a similar situation.",
+  "main": "finances.js",
+  "scripts": {
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XXXEDZHI/biztrack.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/XXXEDZHI/biztrack/issues"
+  },
+  "homepage": "https://github.com/XXXEDZHI/biztrack#readme",
+  "devDependencies": {
+    "@vitest/coverage-v8": "^4.1.5",
+    "jsdom": "^29.1.1",
+    "vitest": "^4.1.5"
+  }
+}
