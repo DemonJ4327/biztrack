@@ -22,7 +22,7 @@ function closeForm() {
     document.getElementById("transaction-form").style.display = "none";
 }
 
-// ✅ 辅助函数：把 "Order Fulfillment" 转成 "orderFulfillment" 用于翻译 key
+// Convert category names such as "Order Fulfillment" into "orderfulfillment" for i18n keys.
 function getCategoryKey(name) {
     return name.replace(/\s+/g, '').toLowerCase();
 }
@@ -30,14 +30,22 @@ function getCategoryKey(name) {
 let transactions = [];
 let serialNumberCounter;
 
-// ✅ 核心函数：渲染费用表格（可被 i18n 重复调用）
+function getNextTransactionId() {
+    if (!transactions || transactions.length === 0) {
+        return 1;
+    }
+
+    return Math.max(...transactions.map(transaction => Number(transaction.trID))) + 1;
+}
+
+// Render expense table. This can be called again when the language changes.
 window.renderTransactionsTable = function() {
     const transactionTableBody = document.getElementById("tableBody");
     if (!transactionTableBody) return;
     
     transactionTableBody.innerHTML = "";
 
-    // ✅ 新增：空状态处理（缺陷修复）
+    // Empty state
     if (!transactions || transactions.length === 0) {
         transactionTableBody.innerHTML = `
             <tr>
@@ -50,7 +58,6 @@ window.renderTransactionsTable = function() {
         return;
     }
 
-    // 获取翻译函数
     const t = window.i18n ? window.i18n.t : (key => key);
 
     transactions.forEach(transaction => {
@@ -65,7 +72,6 @@ window.renderTransactionsTable = function() {
 
         const formattedAmount = typeof transaction.trAmount === 'number' ? `$${transaction.trAmount.toFixed(2)}` : '';
         
-        // ✅ 翻译费用类别：finances.categories.rent -> "房租"
         const catKey = getCategoryKey(transaction.trCategory);
         const translatedCategory = t('finances.categories.' + catKey);
 
@@ -102,7 +108,6 @@ function initFinances() {
         localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
     }
     
-    // ✅ 首次渲染表格
     window.renderTransactionsTable();
 }
 
@@ -113,7 +118,7 @@ function addOrUpdate(event) {
     
     if (type === t('finances.form.submit') || type === 'Add') {
         newTransaction(event);
-    } else if (type === t('finances.form.update') || type === 'Update'){
+    } else if (type === t('finances.form.update') || type === 'Update') {
         const trId = document.getElementById("tr-id").value;
         updateTransaction(+trId);
     }
@@ -125,19 +130,21 @@ function newTransaction(event) {
     const trAmount = parseFloat(document.getElementById("tr-amount").value);
     const trNotes = document.getElementById("tr-notes").value;
 
-    serialNumberCounter = transactions.length + 1;
+    if (!Number.isFinite(trAmount) || trAmount <= 0) {
+        alert("Please enter a valid positive amount.");
+        return;
+    }
     
     const transaction = {
-      trID: serialNumberCounter,
-      trDate,
-      trCategory,
-      trAmount,
-      trNotes,
+        trID: getNextTransactionId(),
+        trDate,
+        trCategory,
+        trAmount,
+        trNotes,
     };
     
     transactions.push(transaction);
     saveAndRender();
-    serialNumberCounter++;
     document.getElementById("transaction-form").reset();
 }
 
@@ -166,11 +173,18 @@ function updateTransaction(trID) {
     const indexToUpdate = transactions.findIndex(transaction => transaction.trID === trID);
     if (indexToUpdate === -1) return;
 
+    const trAmount = parseFloat(document.getElementById("tr-amount").value);
+
+    if (!Number.isFinite(trAmount) || trAmount <= 0) {
+        alert("Please enter a valid positive amount.");
+        return;
+    }
+
     transactions[indexToUpdate] = {
         trID: trID,
         trDate: document.getElementById("tr-date").value,
         trCategory: document.getElementById("tr-category").value,
-        trAmount: parseFloat(document.getElementById("tr-amount").value),
+        trAmount,
         trNotes: document.getElementById("tr-notes").value,
     };
 
@@ -189,6 +203,8 @@ function saveAndRender() {
 function displayExpenses() {
     const resultElement = document.getElementById("total-expenses");
     const t = window.i18n ? window.i18n.t : (key => key);
+
+    if (!resultElement) return;
 
     const totalExpenses = transactions.reduce((total, transaction) => total + transaction.trAmount, 0);
 
@@ -258,5 +274,4 @@ function generateCSV(data) {
     return `${headers}\n${rows.join('\n')}`;
 }
 
-// ✅ 页面加载时初始化
 window.addEventListener('load', initFinances);
